@@ -1,6 +1,6 @@
 package Const ; # Documented at the __END__.
 
-# $Id: Const.pm,v 1.8 1999/07/29 18:06:42 root Exp root $
+# $Id: Const.pm,v 1.9 1999/08/08 15:16:58 root Exp $
 
 require 5.004 ;
 
@@ -10,7 +10,7 @@ use Carp ;
 
 use vars qw( $VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS ) ;
 
-$VERSION = '1.03' ; 
+$VERSION = '1.04' ; 
 
 
 use Exporter() ;
@@ -452,6 +452,8 @@ elements can be deleted.
 
 1999/07/30  No effective changes. Corrections for CPAN and automatic testing.
 
+1999/08/08  Changed licence to LGPL.
+
 =head1 AUTHOR
 
 Mark Summerfield. I can be contacted as <summer@chest.ac.uk> -
@@ -461,8 +463,7 @@ please include the word 'const' in the subject line.
 
 Copyright (c) Mark Summerfield 1998/9. All Rights Reserved.
 
-This module may be used/distributed/modified under the same terms as Perl
-itself.
+This module may be used/distributed/modified under the LGPL.
 
 =cut
 

@@ -13,8 +13,7 @@ In particular they do not test for things that Perl itself will
 catch with strict and/or -w.
 
 Copyright(c) Mark Summerfield 1998/9. All Rights Reserved. This program is
-free software; you can redistribute it and/or modify it under the same terms
-as Perl itself.
+free software; you can redistribute it and/or modify it under the GPL. 
 
 =cut
 
