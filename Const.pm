@@ -1,6 +1,6 @@
 package Const ; # Documented at the __END__.
 
-# $Id: Const.pm,v 1.7 1999/07/28 17:03:46 root Exp root $
+# $Id: Const.pm,v 1.8 1999/07/29 18:06:42 root Exp root $
 
 require 5.004 ;
 
@@ -10,7 +10,7 @@ use Carp ;
 
 use vars qw( $VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS ) ;
 
-$VERSION = '1.02' ; 
+$VERSION = '1.03' ; 
 
 
 use Exporter() ;
@@ -449,6 +449,8 @@ elements can be deleted.
 1999/01/18  Second public release. Arrays dropped: too incomplete.
 
 1999/07/29  Third release. Minor changes.
+
+1999/07/30  No effective changes. Corrections for CPAN and automatic testing.
 
 =head1 AUTHOR
 

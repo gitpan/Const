@@ -1,5 +1,5 @@
 Const.pm
-Const.t
+t/Const.t
 MANIFEST
 Makefile.PL
 README

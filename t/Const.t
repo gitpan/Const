@@ -8,7 +8,7 @@ use Const ':ALL' ;
 
 Test harness for Const.pm.
 
-These tests are NOT comprehensive, but then tests never are :-)
+These tests are not comprehensive, but then tests never are :-)
 In particular they do not test for things that Perl itself will
 catch with strict and/or -w.
 
@@ -90,9 +90,9 @@ sub create_a_const_scalar {
     eval {
         const $S1 => "Test $test" ;
         die if $S1 ne "Test $test" ;
-        print "OK $test\n" ;
+        print "ok $test\n" ;
     } ;
-    print "NOT OK $test\n" if $@ ;
+    print "not ok $test\n" if $@ ;
     $test++ ;
 }
 
@@ -105,9 +105,9 @@ sub create_a_const_scalar_with_invalid_syntax {
         } ;
         warn "\ncaught: $@" if $@ and $debugging ;
         die if not $@ ;
-        print "OK $test\n" ;
+        print "ok $test\n" ;
     } ;
-    print "NOT OK $test\n" if $@ ;
+    print "not ok $test\n" if $@ ;
     $test++ ;
 }
 
@@ -120,9 +120,9 @@ sub const_a_const_scalar {
         } ;
         warn "\ncaught: $@" if $@ and $debugging ;
         die if not $@ ;
-        print "OK $test\n" ;
+        print "ok $test\n" ;
     } ;
-    print "NOT OK $test\n" if $@ ;
+    print "not ok $test\n" if $@ ;
     $test++ ;
 }
 
@@ -135,9 +135,9 @@ sub assign_to_a_const_scalar {
         } ;
         warn "\ncaught: $@" if $@ and $debugging ;
         die if not $@ ;
-        print "OK $test\n" ;
+        print "ok $test\n" ;
     } ;
-    print "NOT OK $test\n" if $@ ;
+    print "not ok $test\n" if $@ ;
     $test++ ;
 }
 
@@ -147,9 +147,9 @@ sub reconst_a_const_scalar {
     eval {
         reconst $S1 => "Test $test" ;
         die if $S1 ne "Test $test" ;
-        print "OK $test\n" ;
+        print "ok $test\n" ;
     } ;
-    print "NOT OK $test\n" if $@ ;
+    print "not ok $test\n" if $@ ;
     $test++ ;
 }
 
@@ -162,9 +162,9 @@ sub reconst_a_const_scalar_with_invalid_syntax {
         } ;
         warn "\ncaught: $@" if $@ and $debugging ;
         die if not $@ ;
-        print "OK $test\n" ;
+        print "ok $test\n" ;
     } ;
-    print "NOT OK $test\n" if $@ ;
+    print "not ok $test\n" if $@ ;
     $test++ ;
 }
 
@@ -180,9 +180,9 @@ sub unconst_a_const_scalar {
         } ;
         warn "\ncaught: $@" if $@ and $debugging ;
         die if $@ ;
-        print "OK $test\n" ;
+        print "ok $test\n" ;
     } ;
-    print "NOT OK $test\n" if $@ ;
+    print "not ok $test\n" if $@ ;
     $test++ ;
 }
 
@@ -196,9 +196,9 @@ sub untie_a_const_scalar {
         } ;
         warn "\ncaught: $@" if $@ and $debugging ;
         die if $@ ;
-        print "OK $test\n" ;
+        print "ok $test\n" ;
     } ;
-    print "NOT OK $test\n" if $@ ;
+    print "not ok $test\n" if $@ ;
     $test++ ;
 }
 
@@ -212,9 +212,9 @@ sub undef_a_const_scalar {
         } ;
         warn "\ncaught: $@" if $@ and $debugging ;
         die if not $@ ;
-        print "OK $test\n" ;
+        print "ok $test\n" ;
     } ;
-    print "NOT OK $test\n" if $@ ;
+    print "not ok $test\n" if $@ ;
     $test++ ;
 }
 
@@ -228,9 +228,9 @@ sub create_a_const_hash_with_a_list {
     eval {
         const \%H => ( A => 1, B => 2, C => 3 ) ;
         die if $H{C} != 3 ;
-        print "OK $test\n" ;
+        print "ok $test\n" ;
     } ;
-    print "NOT OK $test\n" if $@ ;
+    print "not ok $test\n" if $@ ;
     $test++ ;
 }
 
@@ -241,9 +241,9 @@ sub create_a_const_hash_with_an_anonymous_hash {
         my %H1 ;
         const \%H1 => { %H, D => 4 } ;
         die if $H1{C} != 3 or $H1{D} != 4 ;
-        print "OK $test\n" ;
+        print "ok $test\n" ;
     } ;
-    print "NOT OK $test\n" if $@ ;
+    print "not ok $test\n" if $@ ;
     $test++ ;
 }
 
@@ -257,9 +257,9 @@ sub create_a_const_hash_with_a_list_with_invalid_syntax {
         } ;
         warn "\ncaught: $@" if $@ and $debugging ;
         die if not $@ ;
-        print "OK $test\n" ;
+        print "ok $test\n" ;
     } ;
-    print "NOT OK $test\n" if $@ ;
+    print "not ok $test\n" if $@ ;
     $test++ ;
 }
 
@@ -273,9 +273,9 @@ sub create_a_const_hash_with_a_list_with_an_odd_num_of_elements {
         } ;
         warn "\ncaught: $@" if $@ and $debugging ;
         die if not $@ ;
-        print "OK $test\n" ;
+        print "ok $test\n" ;
     } ;
-    print "NOT OK $test\n" if $@ ;
+    print "not ok $test\n" if $@ ;
     $test++ ;
 }
 
@@ -288,9 +288,9 @@ sub const_a_const_hash {
         } ;
         warn "\ncaught: $@" if $@ and $debugging ;
         die if not $@ ;
-        print "OK $test\n" ;
+        print "ok $test\n" ;
     } ;
-    print "NOT OK $test\n" if $@ ;
+    print "not ok $test\n" if $@ ;
     $test++ ;
 }
 
@@ -303,9 +303,9 @@ sub assign_to_a_const_hash {
         } ;
         warn "\ncaught: $@" if $@ and $debugging ;
         die if not $@ ;
-        print "OK $test\n" ;
+        print "ok $test\n" ;
     } ;
-    print "NOT OK $test\n" if $@ ;
+    print "not ok $test\n" if $@ ;
     $test++ ;
 }
 
@@ -318,9 +318,9 @@ sub clear_a_const_hash_using_assignment {
         } ;
         warn "\ncaught: $@" if $@ and $debugging ;
         die if not $@ ;
-        print "OK $test\n" ;
+        print "ok $test\n" ;
     } ;
-    print "NOT OK $test\n" if $@ ;
+    print "not ok $test\n" if $@ ;
     $test++ ;
 }
 
@@ -333,9 +333,9 @@ sub clear_a_const_hash_using_undef {
         } ;
         warn "\ncaught: $@" if $@ and $debugging ;
         die if not $@ ;
-        print "OK $test\n" ;
+        print "ok $test\n" ;
     } ;
-    print "NOT OK $test\n" if $@ ;
+    print "not ok $test\n" if $@ ;
     $test++ ;
 }
 
@@ -348,9 +348,9 @@ sub delete_an_element_from_a_const_hash {
         } ;
         warn "\ncaught: $@" if $@ and $debugging ;
         die if not $@ ;
-        print "OK $test\n" ;
+        print "ok $test\n" ;
     } ;
-    print "NOT OK $test\n" if $@ ;
+    print "not ok $test\n" if $@ ;
     $test++ ;
 }
 
@@ -363,9 +363,9 @@ sub assign_to_an_element_from_a_const_hash {
         } ;
         warn "\ncaught: $@" if $@ and $debugging ;
         die if not $@ ;
-        print "OK $test\n" ;
+        print "ok $test\n" ;
     } ;
-    print "NOT OK $test\n" if $@ ;
+    print "not ok $test\n" if $@ ;
     $test++ ;
 }
 
@@ -375,9 +375,9 @@ sub reconst_a_const_hash {
     eval {
         reconst \%H => ( X => 100, Y => 200, Z => 300 ) ;
         die if $H{Z} != 300 or exists $H{A} ;
-        print "OK $test\n" ;
+        print "ok $test\n" ;
     } ;
-    print "NOT OK $test\n" if $@ ;
+    print "not ok $test\n" if $@ ;
     $test++ ;
 }
 
@@ -390,9 +390,9 @@ sub reconst_a_const_hash_with_invalid_syntax {
         } ;
         warn "\ncaught: $@" if $@ and $debugging ;
         die if not $@ ;
-        print "OK $test\n" ;
+        print "ok $test\n" ;
     } ;
-    print "NOT OK $test\n" if $@ ;
+    print "not ok $test\n" if $@ ;
     $test++ ;
 }
 
@@ -409,9 +409,9 @@ sub unconst_a_const_hash {
         } ;
         warn "\ncaught: $@" if $@ and $debugging ;
         die if $@ ;
-        print "OK $test\n" ;
+        print "ok $test\n" ;
     } ;
-    print "NOT OK $test\n" if $@ ;
+    print "not ok $test\n" if $@ ;
     $test++ ;
 }
 
@@ -427,9 +427,9 @@ sub untie_a_const_hash {
         } ;
         warn "\ncaught: $@" if $@ and $debugging ;
         die if $@ ;
-        print "OK $test\n" ;
+        print "ok $test\n" ;
     } ;
-    print "NOT OK $test\n" if $@ ;
+    print "not ok $test\n" if $@ ;
     $test++ ;
 }
 
@@ -444,9 +444,9 @@ sub undef_a_const_hash {
         } ;
         warn "\ncaught: $@" if $@ and $debugging ;
         die if not $@ ;
-        print "OK $test\n" ;
+        print "ok $test\n" ;
     } ;
-    print "NOT OK $test\n" if $@ ;
+    print "not ok $test\n" if $@ ;
     $test++ ;
 }
 
@@ -460,9 +460,9 @@ sub create_a_const_hash_element_scalar {
     eval {
         const $H{X} => "Test $test" ;
         die if $H{X} ne "Test $test" ;
-        print "OK $test\n" ;
+        print "ok $test\n" ;
     } ;
-    print "NOT OK $test\n" if $@ ;
+    print "not ok $test\n" if $@ ;
     $test++ ;
 }
 
@@ -475,9 +475,9 @@ sub const_a_const_hash_element_scalar {
         } ;
         warn "\ncaught: $@" if $@ and $debugging ;
         die if not $@ ;
-        print "OK $test\n" ;
+        print "ok $test\n" ;
     } ;
-    print "NOT OK $test\n" if $@ ;
+    print "not ok $test\n" if $@ ;
     $test++ ;
 }
 
@@ -490,9 +490,9 @@ sub assign_to_a_const_hash_element_scalar {
         } ;
         warn "\ncaught: $@" if $@ and $debugging ;
         die if not $@ ;
-        print "OK $test\n" ;
+        print "ok $test\n" ;
     } ;
-    print "NOT OK $test\n" if $@ ;
+    print "not ok $test\n" if $@ ;
     $test++ ;
 }
 
@@ -502,9 +502,9 @@ sub reconst_a_const_hash_element_scalar {
     eval {
         reconst $H{X} => "Test $test" ;
         die if $H{X} ne "Test $test" ;
-        print "OK $test\n" ;
+        print "ok $test\n" ;
     } ;
-    print "NOT OK $test\n" if $@ ;
+    print "not ok $test\n" if $@ ;
     $test++ ;
 }
 
@@ -521,9 +521,9 @@ sub unconst_a_const_hash_element_scalar {
         } ;
         warn "\ncaught: $@" if $@ and $debugging ;
         die if $@ ;
-        print "OK $test\n" ;
+        print "ok $test\n" ;
     } ;
-    print "NOT OK $test\n" if $@ ;
+    print "not ok $test\n" if $@ ;
     $test++ ;
 }
 
@@ -538,9 +538,9 @@ sub untie_a_const_hash_element_scalar {
         } ;
         warn "\ncaught: $@" if $@ and $debugging ;
         die if $@ ;
-        print "OK $test\n" ;
+        print "ok $test\n" ;
     } ;
-    print "NOT OK $test\n" if $@ ;
+    print "not ok $test\n" if $@ ;
     $test++ ;
 }
 
@@ -556,9 +556,9 @@ sub undef_a_const_hash_element_scalar {
         } ;
         warn "\ncaught: $@" if $@ and $debugging ;
         die if not $@ ;
-        print "OK $test\n" ;
+        print "ok $test\n" ;
     } ;
-    print "NOT OK $test\n" if $@ ;
+    print "not ok $test\n" if $@ ;
     $test++ ;
 }
 
@@ -576,9 +576,9 @@ sub reconst_non_reconstable_scalar {
         } ;
         warn "\ncaught: $@" if $@ and $debugging ;
         die if not $@ ;
-        print "OK $test\n" ;
+        print "ok $test\n" ;
     } ;
-    print "NOT OK $test\n" if $@ ;
+    print "not ok $test\n" if $@ ;
     $test++ ;
 }
 
@@ -592,9 +592,9 @@ sub reconst_non_reconstable_hash {
         } ;
         warn "\ncaught: $@" if $@ and $debugging ;
         die if not $@ ;
-        print "OK $test\n" ;
+        print "ok $test\n" ;
     } ;
-    print "NOT OK $test\n" if $@ ;
+    print "not ok $test\n" if $@ ;
     $test++ ;
 }
 
@@ -609,9 +609,9 @@ sub unconst_non_unconstable_scalar {
         } ;
         warn "\ncaught: $@" if $@ and $debugging ;
         die if not $@ ;
-        print "OK $test\n" ;
+        print "ok $test\n" ;
     } ;
-    print "NOT OK $test\n" if $@ ;
+    print "not ok $test\n" if $@ ;
     $test++ ;
 }
 
@@ -625,9 +625,9 @@ sub unconst_non_unconstable_hash {
         } ;
         warn "\ncaught: $@" if $@ and $debugging ;
         die if not $@ ;
-        print "OK $test\n" ;
+        print "ok $test\n" ;
     } ;
-    print "NOT OK $test\n" if $@ ;
+    print "not ok $test\n" if $@ ;
     $test++ ;
 }
 
