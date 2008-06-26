@@ -1,5 +1,15 @@
-Const.pm
-t/Const.t
-MANIFEST
+Changes
+Const.xs
+lib/Const.pm
 Makefile.PL
+MANIFEST			This list of files
 README
+t/00-load.t
+t/01-atomic.t
+t/02-avhv.t
+t/03-obj.t
+t/04-dlock.t
+t/benchmark.pl
+t/pod-coverage.t
+t/pod.t
+META.yml                                 Module meta-data (added by MakeMaker)
