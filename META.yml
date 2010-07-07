@@ -1,14 +1,25 @@
---- #YAML:1.0
-name:                Const
-version:             0.01
-abstract:            Facility for creating read-only variables
-license:             ~
-author:              
-    - Dan Kogai <dankogai@dan.co.jp>
-generated_by:        ExtUtils::MakeMaker version 6.42
-distribution_type:   module
-requires:     
-    Test::More:                    0
+---
+name: Const
+version: 0.001
+author:
+  - 'Leon Timmermans <leont@cpan.org>'
+abstract: 'Facility for creating read-only scalars, arrays, hashes'
+license: perl
+resources:
+  license: http://dev.perl.org/licenses/
+build_requires:
+  Module::Build: 0
+  Test::More: 0
+requires:
+  Exporter: 5.57
+  perl: 5.008
+configure_requires:
+  Module::Build: 0
+provides:
+  Const:
+    file: lib/Const.pm
+    version: 0.001
+generated_by: Module::Build version 0.340201
 meta-spec:
-    url:     http://module-build.sourceforge.net/META-spec-v1.3.html
-    version: 1.3
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4

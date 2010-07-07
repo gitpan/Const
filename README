@@ -1,135 +1,45 @@
-NAME
-    Const - Facility for creating read-only variables
+Const
 
-VERSION
-    $Id: README,v 0.1 2008/06/26 22:26:16 dankogai Exp dankogai $
+Const creats read-only scalars, arrays, hashes. It's inspired by Readonly but implemented very differently.
 
-SYNOPSIS
-     use Const;
-     Const my $sv => $initial_value;
-     Const my @av => @values;
-     Const my %hv => (key => value, key => value, ...);
+INSTALLATION
 
-     use Const qw/dlock dunlock/;
-     # note parentheses and equal
-     dlock( my $sv = $initial_value );
-     dlock( my $ar = [@values] );
-     dlock( my $hr = { key => value, key => value, ... } );
-     dunlock $sv;
-     dunlock $ar; dunlock \@av;
-     dunlock $hr; dunlock \%hv;
+To install this module, run the following commands:
 
-DESCRIPTION
-    Const is a drop-in replacement for Readonly. It has the same
-    functionality as Readonly but istead of using "tie", it makes use of
-    "SvREADONLY". Readlonly::XS does that but only to scalars while "Const"
-    recursively makes all scalars in arrays and hashes.
+	perl Build.PL
+	./Build
+	./Build test
+	./Build install
 
-    Note that it does not recurse on blessed references for a good reason.
-    Suppose
+SUPPORT AND DOCUMENTATION
 
-        package Foo;
-        sub new { my $pkg = shift; bless { @_ }, $pkg }
-        sub get { $_[0]->{foo} }
-        sub set { $_[0]->{foo} = $_[1] };
+After installing, you can find documentation for this module with the
+perldoc command.
 
-    And:
+    perldoc Const
 
-        Const my $o => Foo->new(foo=>1);
+You can also look for information at:
 
-    You cannot change $o but you can still use mutators:
+    RT, CPAN's request tracker
+        http://rt.cpan.org/NoAuth/Bugs.html?Dist=Const
 
-        $o = Foo->new(foo => 2); # BOOM!
-        $o->set(2);              # OK
+    AnnoCPAN, Annotated CPAN documentation
+        http://annocpan.org/dist/Const
 
-    If you want to make "$o->{foo}" immutable, Define Foo::new like:
+    CPAN Ratings
+        http://cpanratings.perl.org/d/Const
 
-        sub new {
-          my $pkg = shift; 
-          Const my $self = { @_ }; 
-          bless $self,  $pkg;
-       }
+    Search CPAN
+        http://search.cpan.org/dist/Const/
 
-    Or consider using Moose.
 
-EXPORT
-    "Const" by default. "dlock" and "dunlock" on demand.
+LICENSE AND COPYRIGHT
 
-FUNCTIONS
-  Const
-    See "SYNOPSIS".
+Copyright (C) 2010 Leon Timmermans
 
-  dlock
-      dlock($scalar);
+This program is free software; you can redistribute it and/or modify it
+under the terms of either: the GNU General Public License as published
+by the Free Software Foundation; or the Artistic License.
 
-    Locks $scalar and if $scalar is a reference, recursively locks
-    referents.
-
-  dunlock
-    Does the opposite of "dlock".
-
-BENCHMARK
-    Unlike L <Readonly> which implements immutability via C <tie()>, Const
-    just turns on read -only flag of the scalars so it is faster. Check
-    t/benchmark.pl for details.
-
-  Scalar
-                Rate constant Readonly    Const  literal     glob
-  constant   35461/s       --     -32%     -93%     -99%     -99%
-  Readonly   52083/s      47%       --     -90%     -99%     -99%
-  Const     526316/s    1384%     911%       --     -89%     -89%
-  literal  5000000/s   14000%    9500%     850%       --      -0%
-  glob     5000000/s   14000%    9500%     850%       0%       --
-  Array w/ 1000 elements
-               Rate Readonly    Const  literal     glob
-      Readonly 1205/s       --     -49%     -67%     -80%
-      Const    2381/s      98%       --     -36%     -60%
-      literal  3704/s     207%      56%       --     -37%
-      glob     5882/s     388%     147%      59%       --
-
-  Hash w/ 1000 key-value pairs.
-                Rate Readonly    Const  literal     glob
-      Readonly 180/s       --     -35%     -41%     -59%
-      Const    277/s      54%       --      -9%     -36%
-      literal  305/s      70%      10%       --     -30%
-      glob     433/s     141%      56%      42%       --
-
-AUTHOR
-    Dan Kogai, "<dankogai at dan.co.jp>"
-
-BUGS
-    Please report any bugs or feature requests to "bug-const at
-    rt.cpan.org", or through the web interface at
-    <http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Const>. I will be
-    notified, and then you'll automatically be notified of progress on your
-    bug as I make changes.
-
-SUPPORT
-    You can find documentation for this module with the perldoc command.
-
-        perldoc Const
-
-    You can also look for information at:
-
-    *   RT: CPAN's request tracker
-
-        <http://rt.cpan.org/NoAuth/Bugs.html?Dist=Const>
-
-    *   AnnoCPAN: Annotated CPAN documentation
-
-        <http://annocpan.org/dist/Const>
-
-    *   CPAN Ratings
-
-        <http://cpanratings.perl.org/d/Const>
-
-    *   Search CPAN
-
-        <http://search.cpan.org/dist/Const>
-
-COPYRIGHT & LICENSE
-    Copyright 2008 Dan Kogai, all rights reserved.
-
-    This program is free software; you can redistribute it and/or modify it
-    under the same terms as Perl itself.
+See http://dev.perl.org/licenses/ for more information.
 

@@ -1,152 +1,95 @@
 package Const;
-use 5.008001;
-use warnings;
+
+## no critic (RequireArgUnpacking, ProhibitAmpersandSigils, ProhibitAutomaticExportation)
+use 5.008;
 use strict;
+use warnings FATAL => 'all';
+use Scalar::Util qw/reftype/;
+use Carp qw/croak carp/;
+use Exporter 5.57 'import';
+our @EXPORT = qw/const/;
 
-our $VERSION = sprintf "%d.%02d", q$Revision: 0.1 $ =~ /(\d+)/g;
-use base 'Exporter';
-our @EXPORT    = qw/Const/;
-our @EXPORT_OK = qw/dlock dunlock/;
-require XSLoader;
-XSLoader::load( __PACKAGE__, $VERSION );
+our $VERSION = '0.001';
 
-sub Const(\[$@%&*]@) {
-    if ( not ref $_[0] ) {
-        require Carp;
-        Carp::croak('prototype incorrect');
-    }
-    elsif ( ref $_[0] eq 'ARRAY' ) {
-        @{ $_[0] } = @_[ 1 .. $#_ ];
-        dlock( $_[0] );
-    }
-    elsif ( ref $_[0] eq 'HASH' ) {
-        %{ $_[0] } = @_[ 1 .. $#_ ];
-        dlock( $_[0] );
-    }
-    else {
-        ${ $_[0] } = $_[1];
-        ref $_[0] eq 'REF'
-          ? dlock( ${ $_[0] } )
-          : Internals::SvREADONLY( ${ $_[0] }, 1 );
-    }
+# The use of $_[0] is deliberate and essential, to be able to use it as an lvalue and to keep the refcount down.
+
+sub _make_readonly {
+	my (undef, $dont_clone) = @_;
+	if (my $reftype = reftype $_[0]) {
+		my $needs_cloning = !$dont_clone && &Internals::SvREFCNT($_[0]) > 1;
+		if ($reftype eq 'ARRAY') {
+			$_[0] = [ @{ $_[0] } ] if $needs_cloning;
+			_make_readonly($_) for @{ $_[0] };
+		}
+		elsif ($reftype eq 'HASH') {
+			$_[0] = { %{ $_[0] } } if $needs_cloning;
+			&Internals::hv_clear_placeholders($_[0]);
+			_make_readonly($_) for values %{ $_[0] };
+		}
+		elsif ($reftype eq 'SCALAR' and $needs_cloning) {
+			$_[0] = \(my $anon = ${ $_[0] });
+		}
+		&Internals::SvREADONLY($_[0], 1);
+	}
+	Internals::SvREADONLY($_[0], 1);
+	return;
 }
 
-1;
+## no critic (ProhibitSubroutinePrototypes, ManyArgs)
+sub const(\[$@%]@) {
+	my (undef, @args) = @_;
+	if (&Internals::SvREADONLY($_[0])) {
+		croak 'Attempt to reassign a readonly variable';
+	}
+	if (reftype $_[0] eq 'SCALAR') {
+		croak 'No value for readonly ' if @args == 0;
+		carp 'Too many arguments in Readonly assignment' if @args > 1;
+		${ $_[0] } = $args[0];
+	}
+	elsif (reftype $_[0] eq 'ARRAY') {
+		@{ $_[0] } = @args;
+	}
+	elsif (reftype $_[0] eq 'HASH') {
+		%{ $_[0] } = @args;
+	}
+	else {
+		croak 'Can\'t make variable readonly';
+	}
+	_make_readonly($_[0], 1);
+	return;
+}
+
+1;    # End of Const
+
+__END__
 
 =head1 NAME
 
-Const - Facility for creating read-only variables
+Const - Facility for creating read-only scalars, arrays, hashes
 
 =head1 VERSION
 
-$Id: Const.pm,v 0.1 2008/06/26 22:26:16 dankogai Exp dankogai $
-
-=cut
+Version 0.001
 
 =head1 SYNOPSIS
 
- use Const;
- Const my $sv => $initial_value;
- Const my @av => @values;
- Const my %hv => (key => value, key => value, ...);
+ const my $foo => 'a scalar value';
+ const my @bar => qw/a list value/;
+ const my %buz => (a => 'hash', of => 'something');
 
- use Const qw/dlock dunlock/;
- # note parentheses and equal
- dlock( my $sv = $initial_value );
- dlock( my $ar = [@values] );
- dlock( my $hr = { key => value, key => value, ... } );
- dunlock $sv;
- dunlock $ar; dunlock \@av;
- dunlock $hr; dunlock \%hv;
+=head1 SUBROUTINES/METHODS
 
-=head1 DESCRIPTION
+=head2 const $var, $value
 
-L<Const> is a drop-in replacement for L<Readonly>.  It has the same
-functionality as L<Readonly> but istead of using C<tie>, it makes use
-of C<SvREADONLY>.  L<Readlonly::XS> does that but only to scalars
-while C<Const> recursively makes all scalars in arrays and hashes.
+=head2 const @var, @value...
 
-Note that it does not recurse on blessed references for a good reason.
-Suppose
+=head2 const %var, %value...
 
-    package Foo;
-    sub new { my $pkg = shift; bless { @_ }, $pkg }
-    sub get { $_[0]->{foo} }
-    sub set { $_[0]->{foo} = $_[1] };
-
-And:
-
-    Const my $o => Foo->new(foo=>1);
-
-You cannot change $o but you can still use mutators:
-
-    $o = Foo->new(foo => 2); # BOOM!
-    $o->set(2);              # OK
-
-If you want to make C<< $o->{foo} >> immutable, Define Foo::new like:
-
-    sub new {
-      my $pkg = shift; 
-      Const my $self = { @_ }; 
-      bless $self,  $pkg;
-   }
-
-Or consider using L<Moose>.
-
-=head1 EXPORT
-
-C<Const> by default.  C<dlock> and C<dunlock> on demand.
-
-=head1 FUNCTIONS
-
-=head2 Const
-
-See L</SYNOPSIS>.
-
-=head2 dlock
-
-  dlock($scalar);
-
-Locks $scalar and if $scalar is a reference, recursively locks
-referents.
-
-=head2 dunlock
-
-Does the opposite of C<dlock>.
-
-=head1 BENCHMARK
-
-Unlike L <Readonly> which implements immutability via C <tie()>,
-L<Const> just turns on read -only flag of the scalars so it is faster.
-Check t/benchmark.pl for details.
-
-=head2 Scalar
-                Rate constant Readonly    Const  literal     glob
-  constant   35461/s       --     -32%     -93%     -99%     -99%
-  Readonly   52083/s      47%       --     -90%     -99%     -99%
-  Const     526316/s    1384%     911%       --     -89%     -89%
-  literal  5000000/s   14000%    9500%     850%       --      -0%
-  glob     5000000/s   14000%    9500%     850%       0%       --
-
-=head2 Array w/ 1000 elements
-
-           Rate Readonly    Const  literal     glob
-  Readonly 1205/s       --     -49%     -67%     -80%
-  Const    2381/s      98%       --     -36%     -60%
-  literal  3704/s     207%      56%       --     -37%
-  glob     5882/s     388%     147%      59%       --
-
-=head2 Hash w/ 1000 key-value pairs.
-
-            Rate Readonly    Const  literal     glob
-  Readonly 180/s       --     -35%     -41%     -59%
-  Const    277/s      54%       --      -9%     -36%
-  literal  305/s      70%      10%       --     -30%
-  glob     433/s     141%      56%      42%       --
+This the only function of this module, it is exported by default. It takes a scalar, array or hash lvalue as first argument, and a list one or more values depending on the type of the first argument as the value for the variable. It will set the variable to that value and subsequently make it readonly.
 
 =head1 AUTHOR
 
-Dan Kogai, C<< <dankogai at dan.co.jp> >>
+Leon Timmermans, C<< <leont at cpan.org> >>
 
 =head1 BUGS
 
@@ -155,7 +98,7 @@ the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Const>.  I
 automatically be notified of progress on your bug as I make changes.
 
 =head1 SUPPORT
-
+ 
 You can find documentation for this module with the perldoc command.
 
     perldoc Const
@@ -178,17 +121,22 @@ L<http://cpanratings.perl.org/d/Const>
 
 =item * Search CPAN
 
-L<http://search.cpan.org/dist/Const>
+L<http://search.cpan.org/dist/Const/>
 
 =back
 
-=head1 COPYRIGHT & LICENSE
+=head1 ACKNOWLEDGEMENTS
 
-Copyright 2008 Dan Kogai, all rights reserved.
+The interface for this module was inspired by Eric Roode's L<Readonly>, but the implementation is radically different to be faster and less fragile.
+
+=head1 LICENSE AND COPYRIGHT
+
+Copyright 2010 Leon Timmermans.
 
 This program is free software; you can redistribute it and/or modify it
-under the same terms as Perl itself.
+under the terms of either: the GNU General Public License as published
+by the Free Software Foundation; or the Artistic License.
 
+See http://dev.perl.org/licenses/ for more information.
 
 =cut
-
