@@ -1,6 +1,6 @@
 ---
 name: Const
-version: 0.001
+version: 0.002
 author:
   - 'Leon Timmermans <leont@cpan.org>'
 abstract: 'Facility for creating read-only scalars, arrays, hashes'
@@ -9,6 +9,7 @@ resources:
   license: http://dev.perl.org/licenses/
 build_requires:
   Module::Build: 0
+  Test::Exception: 0
   Test::More: 0
 requires:
   Exporter: 5.57
@@ -18,7 +19,7 @@ configure_requires:
 provides:
   Const:
     file: lib/Const.pm
-    version: 0.001
+    version: 0.002
 generated_by: Module::Build version 0.340201
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html

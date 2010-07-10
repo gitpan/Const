@@ -8,6 +8,7 @@ WriteMakefile
           'PREREQ_PM' => {
                            'Exporter' => '5.57',
                            'Module::Build' => 0,
+                           'Test::Exception' => 0,
                            'Test::More' => 0
                          },
           'INSTALLDIRS' => 'site',
